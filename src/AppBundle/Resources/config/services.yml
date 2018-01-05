@@ -1,0 +1,36 @@
+services:
+    app.abstract.service:
+        class: AppBundle\Services\AbstractService
+        abstract: true
+        calls:
+          - method: setEntityManager
+            arguments:
+              - "@doctrine.orm.entity_manager"
+          - method: setPasswordEncoder
+            arguments:
+              - "@security.password_encoder"
+          - method: setSerializer
+            arguments:
+              - "@serializer"
+
+    app.helper.service:
+        class: AppBundle\Services\Helper
+        public: true
+        parent: app.abstract.service
+
+#calls:
+#    - method: setUserManager
+#      arguments:
+#        - "@fos_user.user_manager"
+#    - method: setEnderecoService
+#      arguments:
+#        - "@app.endereco.service"
+#    - method: setTermoService
+#      arguments:
+#        - "@app.termo.service"
+#    - method: setRouter
+#      arguments:
+#        - "@router"
+#    - method: setEmailService
+#      arguments:
+#        - "@app.email.service"

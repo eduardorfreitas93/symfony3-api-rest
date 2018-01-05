@@ -1,0 +1,49 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
+security:
+    encoders:
+        AppBundle\Entity\Login:
+            algorithm: bcrypt
+
+    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        entity_provider:
+            entity:
+                class: AppBundle:Login
+                property: username
+
+    firewalls:
+        refresh:
+            pattern:  ^/api/token/refresh
+            stateless: true
+            anonymous: true
+
+        login:
+            pattern:  ^/api/login
+            stateless: true
+            anonymous: true
+            form_login:
+                check_path:               /api/login_check
+                success_handler:          lexik_jwt_authentication.handler.authentication_success
+                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+                require_previous_session: false
+                username_parameter:       username
+                password_parameter:       password
+
+        register:
+            pattern:  ^/api/register
+            stateless: true
+            anonymous: true
+
+        api:
+            pattern:   ^/api
+            stateless: true
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+
+    access_control:
+        - { path: ^/api/login,          roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/register,       roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/token/refresh,  roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api,                roles: IS_AUTHENTICATED_FULLY }
