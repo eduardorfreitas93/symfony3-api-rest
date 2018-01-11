@@ -16,31 +16,6 @@ use Symfony\Component\HttpFoundation\Request;
 class DefaultController extends FOSRestController
 {
     /**
-     * @Rest\Get("/teste")
-     * @return JsonResponse
-     */
-    public function getTesteAction()
-    {
-        $helperService = $this->get('app.helper.service');
-        $data = $helperService->holaMundo();
-        $response = new JsonResponse($data);
-        $response->setContent($data);
-
-        return $response;
-    }
-
-    /**
-     * @Rest\Get("/teste/{id}")
-     * @param $id
-     * @return \AppBundle\Entity\Users[]|array
-     */
-    public function getTesteIdAction($id)
-    {
-        $helperService = $this->get('app.helper.service');
-        return $helperService->holaMundoId($id);
-    }
-
-    /**
      * Registrar usuários
      *
      * @Rest\Post("/register")

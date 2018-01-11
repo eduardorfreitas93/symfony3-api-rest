@@ -3,6 +3,7 @@
 namespace AppBundle\Services;
 
 use AppBundle\Entity\Login;
+use AppBundle\Entity\Users;
 use AppBundle\Services\AbstractService;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -46,6 +47,15 @@ class Helper extends AbstractService
         $login->setUsername($username);
         $login->setPassword($this->passwordEncoder->encodePassword($login, $password));
 
+        $user = new Users();
+        $user->setEmail('edu@g.com');
+        $user->setCreateAt(new \DateTime());
+        $user->setName('edu');
+        $user->setRole('');
+        $user->setSurname('ramos');
+        $user->setLogin($login);
+
+        $em->persist($user);
         $em->persist($login);
         $em->flush();
 

@@ -38,6 +38,14 @@ class Login implements UserInterface
      */
     private $isActive;
 
+    /**
+     * @var \AppBundle\Entity\Users
+     *
+     * @Groups({"referenced_user"})
+     * @ORM\OneToOne(targetEntity="\AppBundle\Entity\Users", mappedBy="login")
+     */
+    private $user;
+
     public function __construct()
     {
         $this->isActive = true;
@@ -101,4 +109,23 @@ class Login implements UserInterface
         $this->isActive = $isActive;
     }
 
+    /**
+     * Get user
+     *
+     * @return Users
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set user
+     *
+     * @param Users $user
+     */
+    public function setUser(Users $user)
+    {
+        $this->user = $user;
+    }
 }

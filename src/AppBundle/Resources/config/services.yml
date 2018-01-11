@@ -18,6 +18,11 @@ services:
         public: true
         parent: app.abstract.service
 
+    app.friend.service:
+        class: AppBundle\Services\FriendService
+        public: true
+        parent: app.abstract.service
+
 #calls:
 #    - method: setUserManager
 #      arguments:

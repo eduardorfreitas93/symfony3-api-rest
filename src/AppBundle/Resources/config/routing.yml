@@ -1,3 +1,7 @@
 default:
     type: rest
     resource: "@AppBundle/Controller/DefaultController.php"
+
+friend:
+    type: rest
+    resource: "@AppBundle/Controller/FriendController.php"

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Users
@@ -15,6 +16,7 @@ class Users
     /**
      * @var int
      *
+     * @Groups({"user"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -24,6 +26,7 @@ class Users
     /**
      * @var string
      *
+     * @Groups({"user"})
      * @ORM\Column(name="role", type="string", length=20)
      */
     private $role;
@@ -31,6 +34,7 @@ class Users
     /**
      * @var string
      *
+     * @Groups({"user"})
      * @ORM\Column(name="name", type="string", length=180)
      */
     private $name;
@@ -38,6 +42,7 @@ class Users
     /**
      * @var string
      *
+     * @Groups({"user"})
      * @ORM\Column(name="surname", type="string", length=255)
      */
     private $surname;
@@ -45,24 +50,27 @@ class Users
     /**
      * @var string
      *
+     * @Groups({"user"})
      * @ORM\Column(name="email", type="string", length=255)
      */
     private $email;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="password", type="string", length=255)
-     */
-    private $password;
-
-    /**
      * @var \DateTime
      *
+     * @Groups({"user"})
      * @ORM\Column(name="createAt", type="datetime")
      */
     private $createAt;
 
+    /**
+     * @var \AppBundle\Entity\Login
+     *
+     * @Groups({"referenced_login"})
+     * @ORM\OneToOne(targetEntity="\AppBundle\Entity\Login", inversedBy="user")
+     * @ORM\JoinColumn(name="login", referencedColumnName="id")
+     */
+    private $login;
 
     /**
      * Get id
@@ -171,30 +179,6 @@ class Users
     }
 
     /**
-     * Set password
-     *
-     * @param string $password
-     *
-     * @return Users
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Get password
-     *
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
      * Set createAt
      *
      * @param \DateTime $createAt
@@ -216,6 +200,26 @@ class Users
     public function getCreateAt()
     {
         return $this->createAt;
+    }
+
+    /**
+     * Get login
+     *
+     * @return Login
+     */
+    public function getLogin()
+    {
+        return $this->login;
+    }
+
+    /**
+     * Set login
+     *
+     * @param Login $login
+     */
+    public function setLogin(Login $login)
+    {
+        $this->login = $login;
     }
 }
 
