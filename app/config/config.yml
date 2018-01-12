@@ -69,7 +69,7 @@ swiftmailer:
 nelmio_cors:
     paths:
         '^/api/':
-            allow_origin: ['http://goot.com']
+            allow_origin: ['*']
             allow_headers: ['*']
             allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
             max_age: 3600

@@ -14,17 +14,6 @@ use Symfony\Component\Serializer\Serializer;
 class Helper extends AbstractService
 {
     /**
-     * Retorna todos os usuários da tabela Users
-     *
-     * @return \AppBundle\Entity\Users[]|array
-     */
-    public function holaMundo()
-    {
-        $users = $this->entityManager->getRepository('AppBundle:Login')->findBy(array(), array('id' => 'ASC'));
-        return $this->serializer->serialize($users, 'json', array('groups' => array('login', 'login_password')));
-    }
-
-    /**
      * Retorna usuário por id da tabela Users
      *
      * @param $id
@@ -38,27 +27,75 @@ class Helper extends AbstractService
 
     public function saveLoginUser(ParameterBag $bag)
     {
-        $em = $this->entityManager;
+        $this->entityManager->beginTransaction();
+        try {
+            $this->validation($bag);
+            $login = $this->prepareSaveLogin($bag);
+            $this->prepareSaveUser($login, $bag);
 
-        $username = $bag->get('username');
-        $password = $bag->get('password');
+            $this->entityManager->commit();
 
+            $token = $this->getToken($login);
+
+            return array('token' => $token);
+        } catch (\Exception $e) {
+            $this->entityManager->rollback();
+            throw $e;
+        }
+    }
+
+    public function validation(ParameterBag $bag)
+    {
+        if (empty($bag->get('login'))){
+            throw new \Exception('Login obrigatório');
+        }
+
+        if (empty($bag->get('password'))){
+            throw new \Exception('Senha obrigatório');
+        }
+
+        if (empty($bag->get('name'))){
+            throw new \Exception('Nome obrigatório');
+        }
+
+        if (empty($bag->get('surname'))){
+            throw new \Exception('Sobrenome obrigatório');
+        }
+
+        if (empty($bag->get('email'))){
+            throw new \Exception('Email obrigatório');
+        }
+    }
+
+    public function prepareSaveLogin(ParameterBag $bag)
+    {
         $login = new Login();
-        $login->setUsername($username);
-        $login->setPassword($this->passwordEncoder->encodePassword($login, $password));
+        $login->setUsername($bag->get('login'));
+        $login->setPassword($this->passwordEncoder->encodePassword($login, $bag->get('password')));
 
+        return $this->saveLogin($login);
+    }
+
+    public function saveLogin(Login $login)
+    {
+        return $this->entityManager->getRepository('AppBundle:Login')->save($login);
+    }
+
+    public function prepareSaveUser(Login $login, ParameterBag $bag)
+    {
         $user = new Users();
-        $user->setEmail('edu@g.com');
+        $user->setEmail($bag->get('email'));
         $user->setCreateAt(new \DateTime());
-        $user->setName('edu');
-        $user->setRole('');
-        $user->setSurname('ramos');
+        $user->setName($bag->get('name'));
+        $user->setSurname($bag->get('surname'));
+        $user->setRole('ROLE_USER');
         $user->setLogin($login);
 
-        $em->persist($user);
-        $em->persist($login);
-        $em->flush();
+        return $this->saveUser($user);
+    }
 
-        return $login;
+    public function saveUser(Users $user)
+    {
+        return $this->entityManager->getRepository('AppBundle:Users')->save($user);
     }
 }

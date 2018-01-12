@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Login;
+
 /**
  * UsersRepository
  *
@@ -10,4 +12,11 @@ namespace AppBundle\Repository;
  */
 class LoginRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function save(Login $login)
+    {
+        $this->getEntityManager()->persist($login);
+        $this->getEntityManager()->flush();
+
+        return $login;
+    }
 }

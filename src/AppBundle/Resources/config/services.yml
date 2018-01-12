@@ -12,6 +12,12 @@ services:
           - method: setSerializer
             arguments:
               - "@serializer"
+          - method: setJwtAuthentication
+            arguments:
+              - "@lexik_jwt_authentication.encoder"
+          - method: setContainer
+            arguments:
+              - "@service_container"
 
     app.helper.service:
         class: AppBundle\Services\Helper
