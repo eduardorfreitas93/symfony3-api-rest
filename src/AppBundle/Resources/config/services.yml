@@ -29,6 +29,11 @@ services:
         public: true
         parent: app.abstract.service
 
+    app.file.service:
+        class: AppBundle\Services\FileService
+        public: true
+        parent: app.abstract.service
+
 #calls:
 #    - method: setUserManager
 #      arguments:

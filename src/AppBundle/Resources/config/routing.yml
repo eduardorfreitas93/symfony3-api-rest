@@ -5,3 +5,7 @@ default:
 friend:
     type: rest
     resource: "@AppBundle/Controller/FriendController.php"
+
+file:
+    type: rest
+    resource: "@AppBundle/Controller/FileController.php"

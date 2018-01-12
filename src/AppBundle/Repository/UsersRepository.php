@@ -12,6 +12,12 @@ use AppBundle\Entity\Users;
  */
 class UsersRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * salvar usuário no banco
+     *
+     * @param Users $user
+     * @return Users
+     */
     public function save(Users $user)
     {
         $this->getEntityManager()->persist($user);

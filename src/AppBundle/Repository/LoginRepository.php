@@ -12,6 +12,12 @@ use AppBundle\Entity\Login;
  */
 class LoginRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * salvar login no banco
+     *
+     * @param Login $login
+     * @return Login
+     */
     public function save(Login $login)
     {
         $this->getEntityManager()->persist($login);

@@ -41,7 +41,7 @@ class Login implements UserInterface
     /**
      * @var \AppBundle\Entity\Users
      *
-     * @Groups({"referenced_user"})
+     * @Groups({"login_referenced_user"})
      * @ORM\OneToOne(targetEntity="\AppBundle\Entity\Users", mappedBy="login")
      */
     private $user;

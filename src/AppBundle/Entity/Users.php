@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Users
@@ -66,11 +67,22 @@ class Users
     /**
      * @var \AppBundle\Entity\Login
      *
-     * @Groups({"referenced_login"})
+     * @Groups({"user_referenced_login"})
      * @ORM\OneToOne(targetEntity="\AppBundle\Entity\Login", inversedBy="user")
      * @ORM\JoinColumn(name="login", referencedColumnName="id")
      */
     private $login;
+
+    /**
+     * @Groups({"user_referenced_file"})
+     * @ORM\OneToMany(targetEntity="\AppBundle\Entity\File", mappedBy="user")
+     */
+    private $file;
+
+    public function __construct()
+    {
+        $this->file = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -220,6 +232,22 @@ class Users
     public function setLogin(Login $login)
     {
         $this->login = $login;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param ArrayCollection $file
+     */
+    public function setFile(ArrayCollection $file)
+    {
+        $this->file = $file;
     }
 }
 

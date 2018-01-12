@@ -14,17 +14,12 @@ use Symfony\Component\Serializer\Serializer;
 class Helper extends AbstractService
 {
     /**
-     * Retorna usuário por id da tabela Users
+     * Gerenciar a criação do login e usuário
      *
-     * @param $id
-     * @return \AppBundle\Entity\Users|null|object
+     * @param ParameterBag $bag
+     * @return array
+     * @throws \Exception
      */
-    public function holaMundoId($id)
-    {
-        $user = $this->entityManager->getRepository('AppBundle:Users')->find($id);
-        return $user;
-    }
-
     public function saveLoginUser(ParameterBag $bag)
     {
         $this->entityManager->beginTransaction();
@@ -44,6 +39,12 @@ class Helper extends AbstractService
         }
     }
 
+    /**
+     * Validador dos campos
+     *
+     * @param ParameterBag $bag
+     * @throws \Exception
+     */
     public function validation(ParameterBag $bag)
     {
         if (empty($bag->get('login'))){
@@ -67,6 +68,12 @@ class Helper extends AbstractService
         }
     }
 
+    /**
+     * presave login
+     *
+     * @param ParameterBag $bag
+     * @return Login
+     */
     public function prepareSaveLogin(ParameterBag $bag)
     {
         $login = new Login();
@@ -76,11 +83,24 @@ class Helper extends AbstractService
         return $this->saveLogin($login);
     }
 
+    /**
+     * save login
+     *
+     * @param Login $login
+     * @return Login
+     */
     public function saveLogin(Login $login)
     {
         return $this->entityManager->getRepository('AppBundle:Login')->save($login);
     }
 
+    /**
+     * presave usuário
+     *
+     * @param Login $login
+     * @param ParameterBag $bag
+     * @return Users
+     */
     public function prepareSaveUser(Login $login, ParameterBag $bag)
     {
         $user = new Users();
@@ -94,6 +114,12 @@ class Helper extends AbstractService
         return $this->saveUser($user);
     }
 
+    /**
+     * save usuário
+     *
+     * @param Users $user
+     * @return Users
+     */
     public function saveUser(Users $user)
     {
         return $this->entityManager->getRepository('AppBundle:Users')->save($user);
