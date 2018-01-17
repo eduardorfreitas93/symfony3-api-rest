@@ -94,6 +94,3 @@ lexik_jwt_authentication:
     token_ttl:        '%jwt_token_ttl%'
 
 #abcd123 senha jwt
-
-gesdinet_jwt_refresh_token:
-    ttl: 3600

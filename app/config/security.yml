@@ -13,11 +13,6 @@ security:
                 property: username
 
     firewalls:
-        refresh:
-            pattern:  ^/api/token/refresh
-            stateless: true
-            anonymous: true
-
         login:
             pattern:  ^/api/login
             stateless: true
@@ -35,11 +30,6 @@ security:
             stateless: true
             anonymous: true
 
-        upload:
-            pattern:  ^/api/file/upload
-            stateless: true
-            anonymous: true
-
         api:
             pattern:   ^/api
             stateless: true
@@ -50,6 +40,4 @@ security:
     access_control:
         - { path: ^/api/login,          roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/register,       roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/token/refresh,  roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/file/upload,    roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api,                roles: IS_AUTHENTICATED_FULLY }

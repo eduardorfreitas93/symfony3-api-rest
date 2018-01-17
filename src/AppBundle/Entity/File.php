@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -48,13 +49,15 @@ class File
     private $createAt;
 
     /**
-     * @var \AppBundle\Entity\Users
-     *
-     * @Groups({"file_referenced_users"})
-     * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\Users", inversedBy="file")
-     * @ORM\JoinColumn(name="user", referencedColumnName="id", onDelete="CASCADE")
+     * @Groups({"file_referenced_user"})
+     * @ORM\OneToMany(targetEntity="\AppBundle\Entity\Users", mappedBy="file")
      */
     private $user;
+
+    public function __construct()
+    {
+        $this->user = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -139,23 +142,15 @@ class File
     }
 
     /**
-     * Set user
-     *
-     * @param Users $user
-     *
-     * @return File
+     * @param ArrayCollection $user
      */
-    public function setUser(Users $user)
+    public function setUser(ArrayCollection $user)
     {
         $this->user = $user;
-
-        return $this;
     }
 
     /**
-     * Get user
-     *
-     * @return Users
+     * @return mixed
      */
     public function getUser()
     {

@@ -74,15 +74,13 @@ class Users
     private $login;
 
     /**
-     * @Groups({"user_referenced_file"})
-     * @ORM\OneToMany(targetEntity="\AppBundle\Entity\File", mappedBy="user")
+     * @var \AppBundle\Entity\File
+     *
+     * @Groups({"users_referenced_file"})
+     * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\File", inversedBy="user")
+     * @ORM\JoinColumn(name="image_profile", referencedColumnName="id", onDelete="CASCADE")
      */
     private $file;
-
-    public function __construct()
-    {
-        $this->file = new ArrayCollection();
-    }
 
     /**
      * Get id
@@ -235,7 +233,9 @@ class Users
     }
 
     /**
-     * @return mixed
+     * Get file
+     *
+     * @return File
      */
     public function getFile()
     {
@@ -243,9 +243,11 @@ class Users
     }
 
     /**
-     * @param ArrayCollection $file
+     * Set file
+     *
+     * @param File $file
      */
-    public function setFile(ArrayCollection $file)
+    public function setFile(File $file)
     {
         $this->file = $file;
     }

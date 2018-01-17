@@ -2,6 +2,7 @@
 
 namespace AppBundle\Services;
 
+use AppBundle\Entity\File;
 use AppBundle\Entity\Login;
 use AppBundle\Entity\Users;
 use AppBundle\Services\AbstractService;
@@ -25,8 +26,14 @@ class Helper extends AbstractService
         $this->entityManager->beginTransaction();
         try {
             $this->validation($bag);
+
+            $file = null;
+            if (!empty($bag->get('idImage'))) {
+                $file = $this->entityManager->getRepository(File::class)->find($bag->get('idImage'));
+            }
+
             $login = $this->prepareSaveLogin($bag);
-            $this->prepareSaveUser($login, $bag);
+            $this->prepareSaveUser($login, $bag, $file);
 
             $this->entityManager->commit();
 
@@ -35,6 +42,11 @@ class Helper extends AbstractService
             return array('token' => $token);
         } catch (\Exception $e) {
             $this->entityManager->rollback();
+            if (!empty($bag->get('idImage'))) {
+                $file = $this->entityManager->getRepository(File::class)->find($bag->get('idImage'));
+            }
+            $this->container->get('app.file.service')->removeImage($file);
+
             throw $e;
         }
     }
@@ -47,23 +59,23 @@ class Helper extends AbstractService
      */
     public function validation(ParameterBag $bag)
     {
-        if (empty($bag->get('login'))){
+        if (empty($bag->get('login'))) {
             throw new \Exception('Login obrigatório');
         }
 
-        if (empty($bag->get('password'))){
+        if (empty($bag->get('password'))) {
             throw new \Exception('Senha obrigatório');
         }
 
-        if (empty($bag->get('name'))){
+        if (empty($bag->get('name'))) {
             throw new \Exception('Nome obrigatório');
         }
 
-        if (empty($bag->get('surname'))){
+        if (empty($bag->get('surname'))) {
             throw new \Exception('Sobrenome obrigatório');
         }
 
-        if (empty($bag->get('email'))){
+        if (empty($bag->get('email'))) {
             throw new \Exception('Email obrigatório');
         }
     }
@@ -101,7 +113,7 @@ class Helper extends AbstractService
      * @param ParameterBag $bag
      * @return Users
      */
-    public function prepareSaveUser(Login $login, ParameterBag $bag)
+    public function prepareSaveUser(Login $login, ParameterBag $bag, $file)
     {
         $user = new Users();
         $user->setEmail($bag->get('email'));
@@ -110,6 +122,7 @@ class Helper extends AbstractService
         $user->setSurname($bag->get('surname'));
         $user->setRole('ROLE_USER');
         $user->setLogin($login);
+        if(!empty($file)) $user->setFile($file);
 
         return $this->saveUser($user);
     }

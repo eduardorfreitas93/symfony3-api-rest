@@ -66,6 +66,12 @@ abstract class AbstractService
         $this->container = $container;
     }
 
+    /**
+     * Gerar token
+     *
+     * @param Login $login
+     * @return string
+     */
     public function getToken(Login $login)
     {
         return $this->jwt->encode([
