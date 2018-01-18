@@ -3,14 +3,14 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Table(name="login")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LoginRepository")
  */
-class Login implements UserInterface
+class Login implements AdvancedUserInterface
 {
     /**
      * @Groups({"login"})
@@ -83,6 +83,27 @@ class Login implements UserInterface
 
     public function eraseCredentials()
     {
+        return true;
+    }
+
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    public function isEnabled()
+    {
+        return $this->isActive;
     }
 
     /**

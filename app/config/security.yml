@@ -7,10 +7,9 @@ security:
 
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        entity_provider:
+        our_db_provider:
             entity:
                 class: AppBundle:Login
-                property: username
 
     firewalls:
         login:

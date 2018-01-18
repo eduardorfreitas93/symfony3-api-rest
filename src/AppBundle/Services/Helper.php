@@ -42,10 +42,11 @@ class Helper extends AbstractService
             return array('token' => $token);
         } catch (\Exception $e) {
             $this->entityManager->rollback();
+
             if (!empty($bag->get('idImage'))) {
                 $file = $this->entityManager->getRepository(File::class)->find($bag->get('idImage'));
+                $this->container->get('app.file.service')->removeImage($file);
             }
-            $this->container->get('app.file.service')->removeImage($file);
 
             throw $e;
         }
@@ -122,7 +123,7 @@ class Helper extends AbstractService
         $user->setSurname($bag->get('surname'));
         $user->setRole('ROLE_USER');
         $user->setLogin($login);
-        if(!empty($file)) $user->setFile($file);
+        if (!empty($file)) $user->setFile($file);
 
         return $this->saveUser($user);
     }
