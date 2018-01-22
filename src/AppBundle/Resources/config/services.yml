@@ -34,6 +34,11 @@ services:
         public: true
         parent: app.abstract.service
 
+    app.token.firebase.service:
+        class: AppBundle\Services\TokenFirebase
+        public: true
+        parent: app.abstract.service
+
 #calls:
 #    - method: setUserManager
 #      arguments:

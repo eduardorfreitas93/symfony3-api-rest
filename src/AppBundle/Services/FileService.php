@@ -15,10 +15,9 @@ use Symfony\Component\Serializer\Serializer;
 class FileService extends AbstractService
 {
     /**
-     * Upload de imagem
-     *
      * @param UploadedFile $image
      * @return JsonResponse
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function saveImage(UploadedFile $image)
     {

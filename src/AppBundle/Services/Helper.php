@@ -39,7 +39,7 @@ class Helper extends AbstractService
 
             $token = $this->getToken($login);
 
-            return array('token' => $token);
+            return array('token' => $token, 'uid' => $login->getId());
         } catch (\Exception $e) {
             $this->entityManager->rollback();
 
