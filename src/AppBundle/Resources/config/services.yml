@@ -1,4 +1,18 @@
+imports:
+  - { resource: handlers.yml }
+  - { resource: queries.yml }
+
 services:
+    app.exception_listener:
+        class: AppBundle\EventListener\ExceptionListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
+    acme_api.event.authentication_success_listener:
+        class: AppBundle\EventListener\AuthenticationSuccessListener
+        tags:
+          - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
+
     app.abstract.service:
         class: AppBundle\Services\AbstractService
         abstract: true

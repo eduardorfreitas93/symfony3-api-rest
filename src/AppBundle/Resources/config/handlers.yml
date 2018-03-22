@@ -1,0 +1,25 @@
+# Learn more about services, parameters and containers at
+# https://symfony.com/doc/current/service_container.html
+parameters:
+  #parameter_name: value
+services:
+  app.friend-tat.handler.create_friend_tat:
+      class: AppBundle\Services\FriendTat\Handler\CreateFriendTatHandler
+      arguments:
+          - '@doctrine.orm.entity_manager'
+      tags:
+          - { name: tactician.handler, command: AppBundle\Services\FriendTat\Command\CreateFriendTatCommand }
+
+  app.friend-tat.handler.update_friend_tat:
+      class: AppBundle\Services\FriendTat\Handler\UpdateFriendTatHandler
+      arguments:
+          - '@doctrine.orm.entity_manager'
+      tags:
+          - { name: tactician.handler, command: AppBundle\Services\FriendTat\Command\UpdateFriendTatCommand }
+
+  app.friend-tat.handler.delete_friend_tat:
+      class: AppBundle\Services\FriendTat\Handler\DeleteFriendTatHandler
+      arguments:
+          - '@doctrine.orm.entity_manager'
+      tags:
+          - { name: tactician.handler, command: AppBundle\Services\FriendTat\Command\DeleteFriendTatCommand }

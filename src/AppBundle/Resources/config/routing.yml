@@ -6,6 +6,10 @@ friend:
     type: rest
     resource: "@AppBundle/Controller/FriendController.php"
 
+friendtat:
+    type: rest
+    resource: "@AppBundle/Controller/FriendTatController.php"
+
 file:
     type: rest
     resource: "@AppBundle/Controller/FileController.php"

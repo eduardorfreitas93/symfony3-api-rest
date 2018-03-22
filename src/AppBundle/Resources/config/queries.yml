@@ -1,0 +1,11 @@
+# Learn more about services, parameters and containers at
+# https://symfony.com/doc/current/service_container.html
+parameters:
+  #parameter_name: value
+services:
+
+  app.friend-tat.query:
+      class: AppBundle\Services\FriendTat\Query
+      parent: app.abstract.service
+      arguments:
+          - '@doctrine.orm.entity_manager'

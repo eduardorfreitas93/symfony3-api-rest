@@ -4,6 +4,7 @@ namespace AppBundle\Services;
 
 use AppBundle\Entity\Login;
 use Doctrine\ORM\EntityManager;
+use League\Tactician\CommandBus;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
@@ -11,6 +12,13 @@ use Symfony\Component\Serializer\Serializer;
 
 abstract class AbstractService
 {
+
+    const COMMAND_BUS_TRANSACTIONAL = 'tactician.commandbus.transactional';
+
+    const COMMAND_BUS_NON_TRANSACTIONAL = 'tactician.commandbus';
+
+    const COMMAND_BUS_QUEUED = 'tactician.commandbus.queued';
+
     /** @var EntityManager $entityManager */
     public $entityManager;
 
@@ -67,10 +75,18 @@ abstract class AbstractService
     }
 
     /**
-     * Gerar token
-     *
+     * @param string $name
+     * @return CommandBus
+     */
+    public function getServiceBus(string $name = self::COMMAND_BUS_TRANSACTIONAL): CommandBus
+    {
+        return $this->container->get($name);
+    }
+
+    /**
      * @param Login $login
      * @return string
+     * @throws \Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTEncodeFailureException
      */
     public function getToken(Login $login)
     {

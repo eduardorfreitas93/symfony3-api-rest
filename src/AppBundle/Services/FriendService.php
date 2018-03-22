@@ -20,7 +20,14 @@ class FriendService extends AbstractService
     public function getLogin()
     {
         $users = $this->entityManager->getRepository('AppBundle:Login')->findBy(array(), array('id' => 'ASC'));
-        return $this->serializer->serialize($users, 'json', array('groups' => array('login', 'login_password', 'referenced_user', 'user')));
+        return $this->serializer->serialize($users, 'json', array(
+            'groups' => array(
+                'login',
+                'login_password',
+                'login_referenced_user',
+                'user'
+            )
+        ));
     }
 
     /**
@@ -31,6 +38,12 @@ class FriendService extends AbstractService
     public function getUser()
     {
         $users = $this->entityManager->getRepository('AppBundle:Users')->findBy(array(), array('id' => 'ASC'));
-        return $this->serializer->serialize($users, 'json', array('groups' => array('user', 'referenced_login', 'login', 'login_password')));
+        return $this->serializer->serialize($users, 'json', array(
+            'groups' => array(
+                'user',
+                'user_referenced_login',
+                'login'
+            )
+        ));
     }
 }

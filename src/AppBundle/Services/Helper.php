@@ -123,7 +123,10 @@ class Helper extends AbstractService
         $user->setSurname($bag->get('surname'));
         $user->setRole('ROLE_USER');
         $user->setLogin($login);
-        if (!empty($file)) $user->setFile($file);
+
+        if (!empty($file)) {
+            $user->setFile($file);
+        }
 
         return $this->saveUser($user);
     }
