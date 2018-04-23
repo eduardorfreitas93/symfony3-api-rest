@@ -36,3 +36,11 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+
+    event_recorder:
+        class: AppBundle\Event\EventRecorder
+        autowire: false
+
+    AppBundle\Event\EventRecorder: '@event_recorder'
+
+    League\Tactician\CommandBus: '@tactician.commandbus.default'

@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use League\Tactician\CommandBus;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Symfony\Component\Serializer\Serializer;
 
@@ -33,6 +34,14 @@ abstract class AbstractService
 
     /** @var ContainerInterface $container */
     public $container;
+
+    /** @var EventDispatcherInterface $eventDispatcher */
+    public $eventDispatcher;
+
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     /**
      * @param EntityManager $entityManager

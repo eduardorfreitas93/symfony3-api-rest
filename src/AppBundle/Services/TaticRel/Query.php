@@ -1,20 +1,18 @@
 <?php
 
-namespace AppBundle\Services\FriendTat;
+namespace AppBundle\Services\TaticRel;
 
 use AppBundle\Entity\Tatic;
-use AppBundle\Event\TaticRelRegisteredEvent;
 use AppBundle\Services\AbstractService;
 use AppBundle\Services\FriendTat\Command\CreateFriendTatCommand;
 use AppBundle\Services\FriendTat\Command\DeleteFriendTatCommand;
 use AppBundle\Services\FriendTat\Command\UpdateFriendTatCommand;
-use AppBundle\Services\TaticRel\Command\CreateTaticRelCommand;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class Query
- * @package AppBundle\Service\FriendTat
+ * @package AppBundle\Service\TaticRel
  */
 class Query extends AbstractService
 {
@@ -41,26 +39,16 @@ class Query extends AbstractService
     /**
      * @param Request $request
      * @return mixed
-     * @throws \Exception
      */
     public function save(Request $request)
     {
-        try {
-            $this->entityManager->beginTransaction();
+        $tatic = $this->getServiceBus()->handle(new CreateFriendTatCommand(
+            $request->get('name'),
+            $request->get('surname'),
+            $request->get('email')
+        ));
 
-            $tatic = $this->getServiceBus()->handle(new CreateFriendTatCommand(
-                $request->get('name'),
-                $request->get('surname'),
-                $request->get('email')
-            ));
-
-            $this->entityManager->commit();
-
-            return $tatic;
-        } catch (\Exception $e) {
-            $this->entityManager->rollback();
-            throw $e;
-        }
+        return $tatic;
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -55,9 +56,16 @@ class Tatic
      */
     private $createAt;
 
+    /**
+     * @Groups({"tatic_referenced_tatic_rel"})
+     * @ORM\OneToMany(targetEntity="\AppBundle\Entity\TaticRel", mappedBy="tatic")
+     */
+    private $taticRel;
+
     public function __construct()
     {
         $this->createAt = new \DateTime();
+        $this->taticRel = new ArrayCollection();
     }
 
     /**
@@ -164,5 +172,23 @@ class Tatic
     public function getCreateAt()
     {
         return $this->createAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTaticRel()
+    {
+        return $this->taticRel;
+    }
+
+    /**
+     * Set taticRel
+     *
+     * @param ArrayCollection $taticRel
+     */
+    public function setTaticRel(ArrayCollection $taticRel): void
+    {
+        $this->taticRel = $taticRel;
     }
 }

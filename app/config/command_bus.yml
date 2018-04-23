@@ -8,6 +8,7 @@ tactician:
       transactional:
           middleware:
               - tactician.middleware.locking
+              - AppBundle\Middleware\ReleaseRecordedEventsMiddleware
               - tactician.middleware.doctrine
               - tactician.middleware.validator
               - tactician.middleware.command_handler

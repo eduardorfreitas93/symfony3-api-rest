@@ -3,19 +3,16 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Tatic;
-use AppBundle\Services\FriendTat\Command\CreateFriendTatCommand;
-use AppBundle\Services\FriendTat\Command\DeleteFriendTatCommand;
-use AppBundle\Services\FriendTat\Command\UpdateFriendTatCommand;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class FriendController
+ * Class FriendTatRelController
  * @package AppBundle\Controller
- * @Rest\Prefix("api/friend/tat")
- * @Rest\NamePrefix("api_friend_tat_")
+ * @Rest\Prefix("api/friend/tat/rel")
+ * @Rest\NamePrefix("api_friend_tat_rel_")
  */
-class FriendTatController extends AbstractController
+class FriendTatRelController extends AbstractController
 {
     /**
      * @Rest\Get("")
@@ -37,7 +34,7 @@ class FriendTatController extends AbstractController
      */
     public function postAction(Request $request)
     {
-        $tatic = $this->get('app.friend-tat.query')->save($request);
+        $tatic = $this->get('app.friend-tat-rel.query')->save($request);
 
         return $this->responseBagForPersist($tatic);
     }
@@ -47,7 +44,7 @@ class FriendTatController extends AbstractController
      */
     public function putAction(Request $request)
     {
-        $tatic = $this->get('app.friend-tat.query')->update($request);
+        $tatic = $this->get('app.friend-tat-rel.query')->update($request);
 
         return $this->responseBagForPersist($tatic);
     }
@@ -57,7 +54,7 @@ class FriendTatController extends AbstractController
      */
     public function deleteAction(Tatic $tatic)
     {
-        $this->get('app.friend-tat.query')->delete($tatic);
+        $this->get('app.friend-tat-rel.query')->delete($tatic);
         
         return $this->responseBagForPersist($tatic);
     }

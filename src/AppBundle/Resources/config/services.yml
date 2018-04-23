@@ -32,6 +32,9 @@ services:
           - method: setContainer
             arguments:
               - "@service_container"
+          - method: setEventDispatcher
+            arguments:
+              - "@event_dispatcher"
 
     app.helper.service:
         class: AppBundle\Services\Helper

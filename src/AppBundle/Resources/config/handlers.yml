@@ -7,6 +7,8 @@ services:
       class: AppBundle\Services\FriendTat\Handler\CreateFriendTatHandler
       arguments:
           - '@doctrine.orm.entity_manager'
+          - '@event_recorder'
+          - '@event_dispatcher'
       tags:
           - { name: tactician.handler, command: AppBundle\Services\FriendTat\Command\CreateFriendTatCommand }
 
@@ -23,3 +25,26 @@ services:
           - '@doctrine.orm.entity_manager'
       tags:
           - { name: tactician.handler, command: AppBundle\Services\FriendTat\Command\DeleteFriendTatCommand }
+
+
+
+  app.tatic-rel.handler.create_tatic_rel:
+      class: AppBundle\Services\TaticRel\Handler\CreateTaticRelHandler
+      arguments:
+          - '@doctrine.orm.entity_manager'
+      tags:
+          - { name: tactician.handler, command: AppBundle\Services\TaticRel\Command\CreateTaticRelCommand }
+
+  app.tatic-rel.handler.update_tatic_rel:
+      class: AppBundle\Services\TaticRel\Handler\UpdateTaticalRelHandler
+      arguments:
+          - '@doctrine.orm.entity_manager'
+      tags:
+          - { name: tactician.handler, command: AppBundle\Services\TaticRel\Command\UpdateTaticRelCommand }
+
+  app.tatic-rel.handler.delete_tatic_rel:
+      class: AppBundle\Services\TaticRel\Handler\DeleteFriendTatHandler
+      arguments:
+          - '@doctrine.orm.entity_manager'
+      tags:
+          - { name: tactician.handler, command: AppBundle\Services\TaticRel\Command\DeleteTaticRelCommand }

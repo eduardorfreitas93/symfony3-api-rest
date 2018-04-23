@@ -3,8 +3,11 @@
 namespace AppBundle\Services\FriendTat\Handler;
 
 use AppBundle\Entity\Tatic;
+use AppBundle\Event\EventRecorder;
+use AppBundle\Event\TaticRelRegisteredEvent;
 use AppBundle\Services\FriendTat\Command\CreateFriendTatCommand;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class CreateFriendTatHandler
@@ -18,12 +21,29 @@ class CreateFriendTatHandler
     protected $em;
 
     /**
-     * CreateNewsHandler constructor.
-     * @param EntityManager $em
+     * @var EventRecorder
      */
-    public function __construct(EntityManager $em)
-    {
+    private $eventRecorder;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
+     * CreateFriendTatHandler constructor.
+     * @param EntityManager $em
+     * @param EventRecorder $eventRecorder
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(
+        EntityManager $em,
+        EventRecorder $eventRecorder,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->em = $em;
+        $this->eventRecorder = $eventRecorder;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -42,6 +62,8 @@ class CreateFriendTatHandler
 
         $this->em->persist($taticEntity);
         $this->em->flush();
+
+        $this->eventRecorder->record(new TaticRelRegisteredEvent($command->name, $taticEntity));
 
         return $taticEntity;
     }

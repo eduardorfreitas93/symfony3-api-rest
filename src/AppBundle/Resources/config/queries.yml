@@ -9,3 +9,9 @@ services:
       parent: app.abstract.service
       arguments:
           - '@doctrine.orm.entity_manager'
+
+  app.tatic-rel.query:
+      class: AppBundle\Services\TaticRel\Query
+      parent: app.abstract.service
+      arguments:
+          - '@doctrine.orm.entity_manager'
