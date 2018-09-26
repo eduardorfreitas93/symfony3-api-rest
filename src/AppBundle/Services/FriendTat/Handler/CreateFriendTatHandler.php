@@ -4,10 +4,10 @@ namespace AppBundle\Services\FriendTat\Handler;
 
 use AppBundle\Entity\Tatic;
 use AppBundle\Event\EventRecorder;
+use AppBundle\Event\SendEmailEvent;
 use AppBundle\Event\TaticRelRegisteredEvent;
 use AppBundle\Services\FriendTat\Command\CreateFriendTatCommand;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class CreateFriendTatHandler
@@ -26,24 +26,16 @@ class CreateFriendTatHandler
     private $eventRecorder;
 
     /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
      * CreateFriendTatHandler constructor.
      * @param EntityManager $em
      * @param EventRecorder $eventRecorder
-     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         EntityManager $em,
-        EventRecorder $eventRecorder,
-        EventDispatcherInterface $eventDispatcher
+        EventRecorder $eventRecorder
     ) {
         $this->em = $em;
         $this->eventRecorder = $eventRecorder;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -64,6 +56,7 @@ class CreateFriendTatHandler
         $this->em->flush();
 
         $this->eventRecorder->record(new TaticRelRegisteredEvent($command->name, $taticEntity));
+        $this->eventRecorder->record(new SendEmailEvent($command->name));
 
         return $taticEntity;
     }
